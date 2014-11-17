@@ -1,3 +1,5 @@
+import java.math.BigInteger;
+
 
 public class Karazuba {
 	
@@ -8,7 +10,9 @@ public class Karazuba {
 		String x = args[0];
 		String y = args[1];
 
-		System.out.println(k_multiply(x, y));
+		System.out.println(x + " * " + y + "("+new BigInteger(x)+", "+new BigInteger(y)+")");
+		System.out.println("Karazuba: "+k_multiply(x, y));
+		System.out.println("BigInteger: "+ (new BigInteger(x).multiply(new BigInteger(y))));
 	}
 
 	private static String k_multiply(String x,  String y) {
@@ -18,7 +22,7 @@ public class Karazuba {
 			return new Integer(Integer.parseInt(x) * Integer.parseInt(y)).toString();
 		}
 		
-		// calculate minimum power (power_length) of two that is both higher than x and y
+		// calculate minimum power (power_length) of two that is both higher than x and y's length
 		Integer max = Math.max(x.length(), y.length());
 		Integer power_length = 1;
 		do {
@@ -30,10 +34,10 @@ public class Karazuba {
 		x = String.format("%"+power_length+"s",x).replace(' ', '0');
 		y = String.format("%"+power_length+"s",y).replace(' ', '0');
 
-		String x_h = x.substring(0, power_length/2-1); // power_length is even or 1
-		String x_l = x.substring(power_length/2, power_length-1);
-		String y_h = y.substring(0, power_length/2-1);
-		String y_l = y.substring(power_length/2, power_length-1);
+		String x_h = x.substring(0, power_length/2); // power_length is even or 1
+		String x_l = x.substring(power_length/2, power_length);
+		String y_h = y.substring(0, power_length/2);
+		String y_l = y.substring(power_length/2, power_length);
 		
 		// recursive call
 		String p1 = k_multiply(x_h, y_h);
@@ -80,7 +84,9 @@ public class Karazuba {
 			}
 			buf.append(res.toString().charAt(0));
 		}
-		return buf.reverse().toString();
+		// remove trailing 0s
+		String ret = buf.reverse().toString();
+		return ret.replaceFirst("^0+(?!$)", "");
 	}
 	
 	/**
@@ -111,6 +117,8 @@ public class Karazuba {
 			}
 			buf.append(res.toString().charAt(0));
         }
-		return buf.reverse().toString();
+		// remove trailing 0s
+		String ret = buf.reverse().toString();
+		return ret.replaceFirst("^0+(?!$)", "");
 	}
 }
