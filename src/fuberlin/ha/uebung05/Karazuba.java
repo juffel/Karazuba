@@ -9,7 +9,7 @@ import java.util.Random;
 class Tuple {
 	String a;
 	String b;
-	
+
 	public Tuple(String a, String b) {
 		this.a = a;
 		this.b = b;
@@ -21,19 +21,19 @@ public class Karazuba {
 		if (args.length > 0) {
 			if (args[0].equals("test")) {
 				System.out.println("#  n\t avg");
-				for (int i=1000; i <= 10000; i+=1000)
+				for (int i = 1000; i <= 10000; i += 1000)
 					test(i);
-				
+
 				System.exit(0);
 			}
 		}
-		
+
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BigInteger a, b, result = null;
 
 		while (result == null || !result.equals(0)) {
 			System.out.println("\nBitte gib zwei Zahlen ein (getrennt durch Enter):");
-			
+
 			a = new BigInteger(br.readLine());
 			b = new BigInteger(br.readLine());
 
@@ -43,44 +43,45 @@ public class Karazuba {
 		}
 		br.close();
 	}
-	
+
 	public static void test(int n) {
-		System.out.print(n +"\t");
-		
+		System.out.print(n + "\t");
+
 		// generate random numbers
 		Random rnd = new Random();
 		BigInteger delimiter = BigInteger.TEN.pow(n);
 		Tuple[] entries = new Tuple[10];
-		for(int i=0; i < entries.length; ++i) {
+		for (int i = 0; i < entries.length; ++i) {
 			BigInteger a = generateBigInteger(rnd, delimiter);
 			BigInteger b = generateBigInteger(rnd, delimiter);
-			entries[i] = new Tuple(a.toString(2),b.toString(2));
+			entries[i] = new Tuple(a.toString(2), b.toString(2));
 		}
 
 		long startTime, endTime, currentTime, totalTime = 0;
 		String[] results = new String[10];
 		StringBuilder sb = new StringBuilder("[");
-		for(int i=0; i < entries.length; ++i) {
+		for (int i = 0; i < entries.length; ++i) {
 			// benchmark calculation
 			startTime = System.currentTimeMillis();
 			results[i] = mul(entries[i].a, entries[i].b);
 			endTime = System.currentTimeMillis();
-			
+
 			// output
-			currentTime = endTime-startTime;
+			currentTime = endTime - startTime;
 			totalTime += currentTime;
-			String suffix =  (i == entries.length-1) ? "]" : ", ";
-			sb.append(currentTime+ "ms" + suffix);
+			String suffix = (i == entries.length - 1) ? "]" : ", ";
+			sb.append(currentTime + "ms" + suffix);
 		}
-		System.out.print(((float) totalTime)/entries.length + "\t");
-		System.out.print("# "+sb.toString() + "\n");
-		
+		System.out.print(((float) totalTime) / entries.length + "\t");
+		System.out.print("# " + sb.toString() + "\n");
+
 	}
 
-	private static BigInteger generateBigInteger(Random rnd, BigInteger delimiter) {
+	private static BigInteger generateBigInteger(Random rnd,
+			BigInteger delimiter) {
 		BigInteger b;
 		do {
-		    b = new BigInteger(delimiter.bitLength(), rnd);
+			b = new BigInteger(delimiter.bitLength(), rnd);
 		} while (b.compareTo(delimiter) >= 0);
 		return b;
 	}
@@ -88,19 +89,18 @@ public class Karazuba {
 	/**
 	 * Calculates Karazuba's algorithm to efficiently multiply two numbers
 	 * 
-	 * @param x (binary string of number one)
-	 * @param y (binary string of number two)
+	 * @param x   (binary string of number one)
+	 * @param y   (binary string of number two)
 	 * @return x*y (in binary form)
 	 */
 	public static String mul(String x, String y) {
 		// recursion anchor - do multiplication with native java int values
 		// multiplication of two 15-bit ints will never exceed 32 bit (int max)
-		if (isZero(x) || isZero(y))
-			return "0";
-		
 		if (getLength(x) < 16 && getLength(y) < 16) {
-//			System.out.println("native calculation:  "+Integer.parseInt(x, 2)+"*"+Integer.parseInt(y, 2) );
-			return Integer.toBinaryString(Integer.parseInt(x, 2) * Integer.parseInt(y, 2));
+			// System.out.println("native calculation:  "+Integer.parseInt(x,
+			// 2)+"*"+Integer.parseInt(y, 2) );
+			return Integer.toBinaryString(Integer.parseInt(x, 2)
+					* Integer.parseInt(y, 2));
 		}
 
 		// apply karazuba algorithm
@@ -121,34 +121,36 @@ public class Karazuba {
 		P2 = mul(Xl, Yl);
 		P3 = mul(add(Xh, Xl), add(Yh, Yl));
 
-//		BigInteger P1B = new BigInteger(Xh, 2).multiply(new BigInteger(Yh, 2));
-//		BigInteger P2B = new BigInteger(Xl, 2).multiply(new BigInteger(Yl, 2));
-//		BigInteger P3B = (new BigInteger(Xh, 2).add(new BigInteger(Xl, 2))).multiply(
-//						  new BigInteger(Yh, 2).add(new BigInteger(Yl, 2)));
-//		
-//		System.out.println("Xh:"+Xh+"("+new BigInteger(Xh, 2).toString(10)+")");
-//		System.out.println("Xl:"+Xl+"("+new BigInteger(Xl, 2).toString(10)+")");
-//		System.out.println("Yh:"+Yh+"("+new BigInteger(Yh, 2).toString(10)+")");
-//		System.out.println("Yl:"+Yl+"("+new BigInteger(Yl, 2).toString(10)+")");
-//		System.out.println("P1: "+new BigInteger(P1, 2).toString(10)+", "+P1B.toString(10));
-//		System.out.println("P2: "+new BigInteger(P2, 2).toString(10)+", "+P2B.toString(10));
-//		System.out.println("P3: "+new BigInteger(P3, 2).toString(10)+", "+P3B.toString(10));
-		
-		return add(add(shiftLeft(P1, 2*n), shiftLeft(sub(P3, add(P1, P2)), n)),P2);
+		// BigInteger P1B = new BigInteger(Xh, 2).multiply(new BigInteger(Yh,
+		// 2));
+		// BigInteger P2B = new BigInteger(Xl, 2).multiply(new BigInteger(Yl,
+		// 2));
+		// BigInteger P3B = (new BigInteger(Xh, 2).add(new BigInteger(Xl,
+		// 2))).multiply(
+		// new BigInteger(Yh, 2).add(new BigInteger(Yl, 2)));
+		//
+		// System.out.println("Xh:"+Xh+"("+new BigInteger(Xh,
+		// 2).toString(10)+")");
+		// System.out.println("Xl:"+Xl+"("+new BigInteger(Xl,
+		// 2).toString(10)+")");
+		// System.out.println("Yh:"+Yh+"("+new BigInteger(Yh,
+		// 2).toString(10)+")");
+		// System.out.println("Yl:"+Yl+"("+new BigInteger(Yl,
+		// 2).toString(10)+")");
+		// System.out.println("P1: "+new BigInteger(P1,
+		// 2).toString(10)+", "+P1B.toString(10));
+		// System.out.println("P2: "+new BigInteger(P2,
+		// 2).toString(10)+", "+P2B.toString(10));
+		// System.out.println("P3: "+new BigInteger(P3,
+		// 2).toString(10)+", "+P3B.toString(10));
+
+		return add(add(shiftLeft(P1,2*n),shiftLeft(sub(P3, add(P1, P2)), n)),P2);
 	}
 
 	/**
-	 * checks if given binary string represents the number zero
+	 * calculates the real length of a binary number. Prepended zeros do not
+	 * count.
 	 * 
-	 * @param x
-	 * @return
-	 */
-	private static boolean isZero(String x) {
-		return getLength(x) == 0;
-	}
-
-	/**
-	 * calucaltes the real length of a binary number. Prepended zeros will count.
 	 * @param x
 	 * @return
 	 */
@@ -173,10 +175,10 @@ public class Karazuba {
 		StringBuilder sb = new StringBuilder();
 		boolean a, b, tmp = false;
 		char token;
-		
+
 		x = paddNumber(x, y);
 		y = paddNumber(y, x);
-		
+
 		for (int i = x.length() - 1; i >= 0; --i) {
 			a = getBit(x.charAt(i));
 			b = getBit(y.charAt(i));
@@ -212,7 +214,7 @@ public class Karazuba {
 		boolean a, b;
 		int overflow = 0;
 		char token;
-				
+
 		x = paddNumber(x, y);
 		y = paddNumber(y, x);
 
@@ -258,13 +260,14 @@ public class Karazuba {
 	 */
 	private static String shiftLeft(String x, int length) {
 		StringBuilder prefix = new StringBuilder(x);
-		for (int i=0; i < length; ++i)
+		for (int i = 0; i < length; ++i)
 			prefix.append('0');
 		return prefix.toString();
 	}
 
 	/**
-	 * Adjust two strings so that they have the same length 
+	 * Adjust two strings so that they have the same length
+	 * 
 	 * @param a
 	 * @param b
 	 * @return
@@ -274,8 +277,8 @@ public class Karazuba {
 		while (a.length() < b.length() || a.length() % 2 != 0)
 			a = '0' + a;
 
-		// TODO: without sqrt?
-		while(Math.round(Math.sqrt(a.length()))==Math.sqrt(a.length()))
+		// prevent length is a multiple of 2
+		while (Math.round(Math.sqrt(a.length())) == Math.sqrt(a.length()))
 			a = "00" + a;
 
 		return a;
