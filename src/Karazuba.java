@@ -2,6 +2,7 @@
 public class Karazuba {
 	
 	private static Integer base = 10;
+	private static Integer anchor_length = 10;
 	
 	public static void main(String args[]) {
 		String x = args[0];
@@ -11,6 +12,12 @@ public class Karazuba {
 	}
 
 	private static String k_multiply(String x,  String y) {
+		// set induction-anchor xD
+		// if numbers are short enough, simply use Integer operations
+		if (x.length() < anchor_length && y.length() < anchor_length) {
+			return new Integer(Integer.parseInt(x) * Integer.parseInt(y)).toString();
+		}
+		
 		// calculate minimum power (power_length) of two that is both higher than x and y
 		Integer max = Math.max(x.length(), y.length());
 		Integer power_length = 1;
@@ -54,8 +61,10 @@ public class Karazuba {
 	 */
 	private static String add(String x, String y) {
 		if (x.length() != y.length()) {
-			System.out.println("I dunno how to handle two numbers which dont have the same length.");
-			return null;
+			// pad the two strings (works since numbers don't contain spaces!)
+			Integer max = Math.max(x.length(), y.length());
+			x = String.format("%"+max+"s",x).replace(' ', '0');
+			y = String.format("%"+max+"s",y).replace(' ', '0');
 		}
         Integer size = Math.max(x.length(), y.length());
         StringBuffer buf = new StringBuffer(size);
@@ -80,8 +89,10 @@ public class Karazuba {
 	 */
 	private static String subtract(String x, String y) {
 		if (x.length() != y.length()) {
-			System.out.println("I dunno how to handle two numbers which dont have the same length.");
-			return null;
+			// pad the two strings (works since numbers don't contain spaces!)
+			Integer max = Math.max(x.length(), y.length());
+			x = String.format("%"+max+"s",x).replace(' ', '0');
+			y = String.format("%"+max+"s",y).replace(' ', '0');
 		}
         Integer size = Math.max(x.length(), y.length());
         StringBuffer buf = new StringBuffer(size);
