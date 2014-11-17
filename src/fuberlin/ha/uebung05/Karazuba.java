@@ -18,6 +18,16 @@ class Tuple {
 
 public class Karazuba {
 	public static void main(String[] args) throws IOException {
+		if (args.length > 0) {
+			if (args[0].equals("test")) {
+				System.out.println("#  n\t avg");
+				for (int i=1000; i <= 10000; i+=1000)
+					test(i);
+				
+				System.exit(0);
+			}
+		}
+		
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BigInteger a, b, result = null;
 
@@ -32,13 +42,10 @@ public class Karazuba {
 			System.out.println(a + " * " + b + " = " + result.toString(10));
 		}
 		br.close();
-		
-//		for (int i=1000; i <= 10000; i+=1000)
-//			test(i);
 	}
 	
 	public static void test(int n) {
-		System.out.print("n=" + n +"\t [");
+		System.out.print(n +"\t");
 		
 		// generate random numbers
 		Random rnd = new Random();
@@ -52,6 +59,7 @@ public class Karazuba {
 
 		long startTime, endTime, currentTime, totalTime = 0;
 		String[] results = new String[10];
+		StringBuilder sb = new StringBuilder("[");
 		for(int i=0; i < entries.length; ++i) {
 			// benchmark calculation
 			startTime = System.currentTimeMillis();
@@ -61,11 +69,12 @@ public class Karazuba {
 			// output
 			currentTime = endTime-startTime;
 			totalTime += currentTime;
-			System.out.print(currentTime+ "ms, "); 
+			String suffix =  (i == entries.length-1) ? "]" : ", ";
+			sb.append(currentTime+ "ms" + suffix);
 		}
-		System.out.print("]"); 
+		System.out.print(((float) totalTime)/entries.length + "\t");
+		System.out.print("# "+sb.toString() + "\n");
 		
-		System.out.println("  Average: " + ((float) totalTime)/entries.length + "\n\n");
 	}
 
 	private static BigInteger generateBigInteger(Random rnd, BigInteger delimiter) {
