@@ -121,29 +121,6 @@ public class Karazuba {
 		P2 = mul(Xl, Yl);
 		P3 = mul(add(Xh, Xl), add(Yh, Yl));
 
-		// BigInteger P1B = new BigInteger(Xh, 2).multiply(new BigInteger(Yh,
-		// 2));
-		// BigInteger P2B = new BigInteger(Xl, 2).multiply(new BigInteger(Yl,
-		// 2));
-		// BigInteger P3B = (new BigInteger(Xh, 2).add(new BigInteger(Xl,
-		// 2))).multiply(
-		// new BigInteger(Yh, 2).add(new BigInteger(Yl, 2)));
-		//
-		// System.out.println("Xh:"+Xh+"("+new BigInteger(Xh,
-		// 2).toString(10)+")");
-		// System.out.println("Xl:"+Xl+"("+new BigInteger(Xl,
-		// 2).toString(10)+")");
-		// System.out.println("Yh:"+Yh+"("+new BigInteger(Yh,
-		// 2).toString(10)+")");
-		// System.out.println("Yl:"+Yl+"("+new BigInteger(Yl,
-		// 2).toString(10)+")");
-		// System.out.println("P1: "+new BigInteger(P1,
-		// 2).toString(10)+", "+P1B.toString(10));
-		// System.out.println("P2: "+new BigInteger(P2,
-		// 2).toString(10)+", "+P2B.toString(10));
-		// System.out.println("P3: "+new BigInteger(P3,
-		// 2).toString(10)+", "+P3B.toString(10));
-
 		return add(add(shiftLeft(P1,2*n),shiftLeft(sub(P3, add(P1, P2)), n)),P2);
 	}
 
