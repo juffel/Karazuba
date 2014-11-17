@@ -7,12 +7,7 @@ public class Karazuba {
 		String x = args[0];
 		String y = args[1];
 
-		// return new BigInteger(k_multiply(x, y));
-
-		Integer a = 1231234;
-		Integer b = 3219898;
-		System.out.println(add(a.toString(), b.toString()) + "==?" + (a + b));
-		System.out.println(subtract(b.toString(), a.toString()) + "==?" + (b - a));
+		System.out.println(k_multiply(x, y));
 	}
 
 	private static String k_multiply(String x,  String y) {
@@ -25,8 +20,8 @@ public class Karazuba {
 		Integer n = power_length / 2;
 		
 		// pad the two strings (works since numbers don't contain spaces!)
-		x = String.format("%"+power_length+"",x).replace(' ', '0');
-		y = String.format("%"+power_length+"",y).replace(' ', '0');
+		x = String.format("%"+power_length+"s",x).replace(' ', '0');
+		y = String.format("%"+power_length+"s",y).replace(' ', '0');
 
 		String x_h = x.substring(0, power_length/2-1); // power_length is even or 1
 		String x_l = x.substring(power_length/2, power_length-1);
