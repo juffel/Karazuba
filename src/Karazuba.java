@@ -1,4 +1,3 @@
-import java.math.BigInteger;
 
 public class Karazuba {
 	
@@ -10,7 +9,10 @@ public class Karazuba {
 
 		// return new BigInteger(k_multiply(x, y));
 
-		System.out.println(add("123", "3219898"));
+		Integer a = 1231234;
+		Integer b = 3219898;
+		System.out.println(add(a.toString(), b.toString()) + "==?" + (a + b));
+		System.out.println(subtract(b.toString(), a.toString()) + "==?" + (b - a));
 	}
 
 	private static String k_multiply(String x,  String y) {
@@ -60,10 +62,10 @@ public class Karazuba {
 			System.out.println("I dunno how to handle two numbers which dont have the same length.");
 			return null;
 		}
-		Integer size = Math.max(x.length(), y.length());
-		StringBuffer buf = new StringBuffer(size);
-		Integer carriage = 0;
-		Integer res = 0;
+        Integer size = Math.max(x.length(), y.length());
+        StringBuffer buf = new StringBuffer(size);
+        Integer carriage = 0;
+        Integer res = 0;
 		for(int i = 0; i < size; i++) {
 			res = carriage + Integer.parseInt(x.substring(size-i-1,size-i)) + Integer.parseInt(y.substring(size-i-1, size-i));
 			if (res > base) {
@@ -77,7 +79,32 @@ public class Karazuba {
 		return buf.reverse().toString();
 	}
 	
+	/**
+	 * Subtracts y from x char-wise.
+	 * The two Strings must be of the same length!
+	 */
 	private static String subtract(String x, String y) {
-		return null;
+		if (x.length() != y.length()) {
+			System.out.println("I dunno how to handle two numbers which dont have the same length.");
+			return null;
+		}
+        Integer size = Math.max(x.length(), y.length());
+        StringBuffer buf = new StringBuffer(size);
+        Integer carriage = 0;
+        Integer res = 0;
+        for(int i = 0; i < size; i++) {
+			res = Integer.parseInt(x.substring(size-i-1,size-i)) - (Integer.parseInt(y.substring(size-i-1, size-i)) + carriage);
+			if (res < 0) {
+				res = res % base; // this will return a negative value, which is not the desired behavior;
+				if (res < 0) { // the value will be negative, so this if-clause is actually unnecessary but provided due to illustratory purposes
+					res += base;
+				}
+				carriage = 1;
+			} else {
+				carriage = 0;
+			}
+			buf.append(res.toString().charAt(0));
+        }
+		return buf.reverse().toString();
 	}
 }
